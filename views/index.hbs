@@ -1,0 +1,23 @@
+<div class='py-9'>
+    <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
+</div>
+
+<div class='row align-items-center justify-content-center'>
+    <form class="create-form" width=352>
+            <div class="form-group" style="width: 352px;">
+                <label for="qNew"></label>
+                <input type="text" id="eNew" name="email" placeholder="Customer's email" class='rounded'>
+
+                <select class="form-control combo" id="bNew" name="burger_name" placeholder="Burger name" class='rounded'>
+                     <option>Select Option</option>
+                    {{#each burgers}} {{> burgers/burger-devour this burger_name=burger_name id=id}} {{/each}}
+                </select>
+                <input type="text" id="qNew" name="quantity" placeholder='Enter quantity of burger' class='rounded'>
+            </div>
+
+        <button type="submit" class="btn btn-success submitButton" href="#modalPopUp" rel="modal:open">Get Burger</button>
+    </form>
+</div> 
+
+
+

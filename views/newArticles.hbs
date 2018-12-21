@@ -1,0 +1,43 @@
+<div class='container jumbotron '>
+  
+<table class="table" id='cashed'>
+  <thead>INACTIVE BILLS
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Customer</th>
+      <th scope="col">Total Bill</th>
+      <th scope="col">Cashed</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+       {{#each bills}} {{#if cashed}} {{> bills/bills-list-cashed this customersId=customersId id=id billTotal=billTotal cashed=false}}{{/if}}{{/each}}
+     
+   
+  </tbody>
+</table>
+  </div>
+
+
+
+  <div class='container jumbotron '>
+  
+<table class="table" id='notCashed'>
+  <thead>ACTIVE BILLS
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Customer ID</th>
+      <th scope="col">Total Bill</th>
+      <th scope="col">Cashed</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+       {{#each bills}} {{#unless cashed}} {{> bills/bills-list this customersId=customersId  id=id billTotal=billTotal cashed=true}}{{/unless}}{{/each}}
+     
+   
+  </tbody>
+</table>
+  </div>
+
+

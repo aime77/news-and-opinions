@@ -1,0 +1,52 @@
+body{
+    margin-top: 12rem;
+    font-size:1rem;
+    background-image: url('/assets/img/bg1.jpg');
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-position: center;
+    
+    -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+ 
+    color: black;
+    width:100%;
+    /*background: rgba(0, 0, 0, 0.4);*/
+}
+
+h1{
+    font-family: 'Sedgwick Ave', cursive;
+}
+h2{
+    font-family: 'Courgette', cursive;
+    font-size: 2rem;
+}
+#bNew, #eNew, #qNew{
+width:22rem;
+height:3rem;
+text-align: initial;
+}
+.toEatList{
+    font-family:"Comic Sans MS", cursive, sans-serif;
+ background-color:#ffc37f;
+ -webkit-box-shadow: 4px 0px 5px 0px rgba(0,0,0,0.75);
+ -moz-box-shadow: 4px 0px 5px 0px rgba(0,0,0,0.75);
+ box-shadow: 4px 0px 5px 0px rgba(0,0,0,0.75);
+}
+
+.submitButton{
+    -webkit-box-shadow: 4px 0px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 4px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 4px 0px 5px 0px rgba(0,0,0,0.75);
+   }
+
+.eatenList{
+    font-family:"Comic Sans MS", cursive, sans-serif;
+    background-color:lightgray;
+    -webkit-box-shadow: 4px 0px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 4px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 4px 0px 5px 0px rgba(0,0,0,0.75);
+}
+

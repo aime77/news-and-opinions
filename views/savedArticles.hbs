@@ -1,0 +1,20 @@
+<div class='container jumbotron '>
+
+<table class="table">
+  <thead> CUSTOMERS
+    <tr>
+      <th scope="col">Customer ID</th>
+      <th scope="col">Email</th>
+      <th scope="col">Customer since</th>
+    
+    </tr>
+  </thead>
+  <tbody>
+    
+       {{#each customers}} {{> customers/customers-list this email=email id=id createdAt=createdAt}}{{/each}}
+     
+   
+  </tbody>
+</table>
+  </div>
+  
