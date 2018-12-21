@@ -6,7 +6,9 @@ const exphbs = require("express-handlebars");
 const axios = require("axios");
 
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
-const db = require("./models");
+const Note = require("./models/Note.js");
+const Article = require("./models/Article.js");
+const Article = require("./models/User.js");
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -37,3 +39,13 @@ mongoose.connect(
   MONGODB_URI,
   { useMongoClient: true }
 );
+
+const db=mongoose.connection;
+
+db.once("open", ()=>{
+    console.log("Successful connection!");
+});
+
+db.on("error", (error)=>{
+    console.log("Error MongooseDB:", error);
+});
