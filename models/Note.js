@@ -1,4 +1,4 @@
-const monggose=require("monggose");
+const mongoose=require("mongoose");
 
 const Schema=mongoose.Schema;
 

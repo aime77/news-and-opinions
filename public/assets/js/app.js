@@ -1,52 +1,60 @@
-$(function(){
+$(document).on("click", "#saveButton", function(){
+const thisId=$(this).data("_id");
+const saved=$(this).data("saved");
 
-$(".change-devoured").on("click", function (event){
-  let id = $(this).data("id");
-  let newStatus = $(this).data("cashed");
-  console.log(newStatus);
+console.log(saved);
+console.log(thisId);
 
-  let newDev = {
-   cashed: newStatus
-  };
+let updateSave={
+    saved:saved,
+    id:thisId
+};
 
-  $.ajax("/api/customer/bills/" + id, {
-    type: "PUT",
-    data: newDev
-  }).then(
-    () =>{
-      console.log("changed devoured to", newDev);
-      location.reload();
-    }
-  );
-});
-
-  $(".create-form").on("submit", function (event) {
-    event.preventDefault();
-    var test=$("#eNew").val().trim();
-  
-    // let regex = /^[a-zA-Z\s]+$/;
-    // if ($(`#eNew`).val().trim() === ""|| !regex.test($("#eNew").val())) {
-    //   $("#modalPopUp").text("You have to enter a valid name before submitting!");
-    //   return true;
-    // }
-  
-    let objInfo = {
-      email: $("#eNew").val().trim(),
-      quantity:$('#qNew').val().trim(),
-      burger_name:$('#bNew').val().trim()
-    };
-    console.log('test');
-    $.ajax("/api/customer", {
-      type: "POST",
-      data: objInfo
-    }).then(()=> {
-      console.log("created new burger");
-      location.reload();
-    }
-    );
-
-    $("#eNew").val("");
-     $('#qNew').val("");
-      $('#bNew').val("");
-});
+$.ajax("/article-save/"+thisId,{
+    type:"PUT",
+    data:updateSave
 })
+.then((data)=>{
+console.log(data);
+
+})
+$(`#${thisId}`).empty();
+})
+
+$(document).on("click", "#deleteButton", function(){
+    const thisId=$(this).data("_id");
+    
+    console.log(thisId);
+    
+    let deleteObj={
+        id:thisId
+    };
+    
+    $.ajax("/article-delete/"+thisId,{
+        type:"DELETE",
+        data:deleteObj
+    })
+    .then((data)=>{
+    console.log(data);
+    })
+
+    $(`#${thisId}`).empty();
+    })
+
+    $(document).on("click", "#submit", function(){
+        
+        const thisId=$(this).data("_id");
+        
+        $.ajax({
+            method:"POST",
+            url:`/note/${thisId}`,
+            data:{
+            note:$("#noteText").val().trim(),
+        }
+        })
+        .then((data)=>{
+        console.log(data);
+        })
+    
+        $("#note").val("");
+        })

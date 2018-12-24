@@ -1,0 +1,19 @@
+<div class="card" id="{{_id}}">
+        <h5 class="card-header"><a href="#https://medium.com/{{link}}">{{title}}</a></h5>
+        <div class="card-body">
+
+           <p class="card-text">{{summary}}</p>
+            <a class="btn btn-primary" id="deleteButton" data-_id="{{_id}}">Delete</a>
+            <a class="btn btn-primary" id="noteButton" href="#note-form" rel="modal:open">Notes</a>
+        </div>
+    </div>
+
+    <form id="note-form" class="modal">
+ <div class="form-group">
+    <label for="exampleFormControlTextarea1">{{title}}</label>
+    <textarea class="form-control" id="noteText" rows="3"></textarea>
+     <a class="btn btn-primary" id="deleteButton" data-_id="{{_id}}">Delete</a>
+     <button class="btn btn-primary" id="submit" type="submit">Button</button>
+  </div>
+</form>
+

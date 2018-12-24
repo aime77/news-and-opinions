@@ -1,20 +1,10 @@
-<div class='container jumbotron '>
+<div class='py-9'>
+    <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
+</div>
 
-<table class="table">
-  <thead> CUSTOMERS
-    <tr>
-      <th scope="col">Customer ID</th>
-      <th scope="col">Email</th>
-      <th scope="col">Customer since</th>
-    
-    </tr>
-  </thead>
-  <tbody>
-    
-       {{#each customers}} {{> customers/customers-list this email=email id=id createdAt=createdAt}}{{/each}}
-     
+
+{{#each article}}  {{#if saved}} {{>articles/cardArticles-saved this _id=_id title=title summary=summary link=link saved=false}} {{/if}} {{/each}}
+
+
+
    
-  </tbody>
-</table>
-  </div>
-  

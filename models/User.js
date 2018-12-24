@@ -19,9 +19,9 @@ const UserSchema = new Schema({
     required: "Username is required"
   },
   password: {
-    ttype: String,
+    type: String,
     trim: true,
-    requited: "Password is required",
+    required: "Password is required",
     validate: [
       function(input) {
         return input.length >= 7;
