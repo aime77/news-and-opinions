@@ -21,7 +21,6 @@ db.on("error", error => {
   console.log("Error MongooseDB:", error);
 });
 
-
 router.get("/scrape", (req, res) => {
   axios.get("https://medium.com/topic/technology").then(function(response) {
     const $ = cheerio.load(response.data);
@@ -46,7 +45,7 @@ router.get("/scrape", (req, res) => {
       Article.create(result)
         .then(function(result) {
           console.log(result);
-          res.redirect("/home")
+          res.redirect("/home");
         })
         .catch(function(err) {
           console.log(err);
@@ -119,6 +118,7 @@ router.post("/notes/:id", function(req, res) {
       ).then(function(dbArticle) {
         console.log("yes created");
         console.log(dbArticle);
+        res.json(dbNote);
       });
     })
     .catch(function(err) {
@@ -140,13 +140,17 @@ router.get("/notes/:id", function(req, res) {
     });
 });
 
-router.delete("/note/:id", function(req, res){
-  Note.findOneAndDelete({_id:req.params.id})
-})
+//delte individual notes
+router.delete("/note/:id", function(req, res) {
+  console.log(req.params.id);
+  Note.findOneAndDelete({ _id: req.params.id }).then((err, res) => {
+    console.log(res);
+  });
+});
 
 //create an account after user signs in
 router.post("/signin/", function(req, res) {
-    console.log(req.body)
+  console.log(req.body);
   User.create({
     firstName: req.body.firstName,
     lastName: req.body.lastName,

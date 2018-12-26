@@ -36,10 +36,26 @@ $(document).on("click", "#deleteButton", function() {
   $(`#${thisId}`).empty();
 });
 
+$(document).on("click", ".deleteNote", function() {
+  const thisId = $(this).attr("id");
+
+  let deleteObj = {
+    id: thisId
+  };
+
+  $.ajax("/note/" + thisId, {
+    type: "DELETE",
+    data: deleteObj
+  }).then(data => {
+    console.log(data);
+  });
+
+  $(`#${thisId}`).remove();
+  $(`#id_${thisId}`).remove();
+});
+
 $(document).on("click", "#submit", function(event) {
   event.preventDefault();
-  const id = $(this).data("_id");
-  console.log(id);
 
   const dataObj = {
     note: $("textarea").val()
@@ -49,7 +65,16 @@ $(document).on("click", "#submit", function(event) {
     method: "POST",
     url: "/notes/" + getId,
     data: dataObj
-  }).then(() => {});
+  }).then(data => {
+    console.log(data);
+    let noteCard = `<li class="list-group-item" id="id_${data._id}">${
+      data.body
+    } <a class="btn btn-primary small deleteNote" id=${
+      data._id
+    }>Delete</a></li>`;
+
+    $(".notesBody").append(noteCard);
+  });
 
   $("#noteInput").val("");
 });
@@ -66,62 +91,67 @@ $(document).on("click", "#noteButton", function() {
   }).then(function(data) {
     $("#notesTitle").append(data.title);
     getId = data._id;
-    
+
     for (let i = 0; i < data.note.length; i++) {
-      $(".notesBody").append(`<li class="list-group-item">${data.note[i].body} <a class="btn btn-primary small" id="deleteButton">Delete</a></li>`);
-      $(".deleteButton").attr("data-_id", data.note[i]._id);
+      let noteCard = `<li class="list-group-item" id="id_${data.note[i]._id}">${
+        data.note[i].body
+      } <a class="btn btn-primary small deleteNote" id=${
+        data.note[i]._id
+      }>Delete</a></li>`;
+
+      $(".notesBody").append(noteCard);
     }
+
+    //appendNote(data.note)
   });
 });
 
+function appendNote(a) {
+  for (let i = 0; i < a.length; i++) {
+    let noteCard = `<li class="list-group-item" id="id_${a[i]._id}">${
+      a[i].body
+    } <a class="btn btn-primary small deleteNote" id=${
+      a[i]._id
+    }>Delete</a></li>`;
 
+    $(".notesBody").append(noteCard);
+  }
+}
 
 $(document).on("click", "#submitSignin", function(event) {
-    event.preventDefault();
+  event.preventDefault();
   const data = {
-    username: $("#inputUsername")
-      .val(),
-    password: $("#inputPassword")
-      .val(),
+    username: $("#inputUsername").val(),
+    password: $("#inputPassword").val(),
     email: $("#inputEmail")
       .val()
       .trim(),
-    lastName: $("#inputLName")
-      .val(),
-    firstName: $("#inputName")
-      .val(),
+    lastName: $("#inputLName").val(),
+    firstName: $("#inputName").val()
   };
   console.log(data);
   // empty form validation
- 
-    $.ajax("/signin/", {
-      type: "POST",
-      data: data
-    }).then(() => {
-      console.log("sent data");
-    });
 
-    $("#inputUsername")
-      .val("");
-    $("#inputPassword")
-      .val("");
-   $("#inputEmail")
-      .val("");
-    $("#inputLName")
-      .val("");
-    $("#inputName")
-      .val("");
-    
+  $.ajax("/signin/", {
+    type: "POST",
+    data: data
+  }).then(() => {
+    console.log("sent data");
   });
 
+  $("#inputUsername").val("");
+  $("#inputPassword").val("");
+  $("#inputEmail").val("");
+  $("#inputLName").val("");
+  $("#inputName").val("");
+});
 
 $(document).on("click", "#login", function() {
- 
   const data = {
     username: $("#inputUsername")
       .val()
       .trim(),
-    password: $("#inputPassword") 
+    password: $("#inputPassword")
       .val()
       .trim()
   };

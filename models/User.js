@@ -29,39 +29,40 @@ const UserSchema = new Schema({
       "Password must be at least 7 characters long."
     ]
   },
-  article: [{
-    type: Schema.Types.ObjectId,
-    ref: "Article"
-  }],
+  article: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Article"
+    }
+  ],
   email: {
     type: String,
     unique: true,
     match: [/.+@.+\..+/, "Please enter a valid e-mail address"]
   },
 
-  userCreated:{
-      type:Date,
-      default:Date.now
+  userCreated: {
+    type: Date,
+    default: Date.now
   },
-  lastUpdated:Date,
-  fullName:String,
+  lastUpdated: Date,
+  fullName: String,
   article: {
     type: Schema.Types.ObjectId,
     ref: "Article"
   }
-
 });
 
-UserSchema.methods.lastUpdatedDate=()=>{
-    this.lastUpdated=Date.now();
-    return this.lastUpdated;
+UserSchema.methods.lastUpdatedDate = () => {
+  this.lastUpdated = Date.now();
+  return this.lastUpdated;
 };
 
-UserSchema.methods.setFullName=()=>{
-    this.fullName=`${this.firstName} ${this.lastName}`;
-    return this.fullName;
-}
+UserSchema.methods.setFullName = () => {
+  this.fullName = `${this.firstName} ${this.lastName}`;
+  return this.fullName;
+};
 
-const User=mongoose.model("User", UserSchema);
+const User = mongoose.model("User", UserSchema);
 
-module.exports=User;
+module.exports = User;
