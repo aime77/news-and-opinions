@@ -1,5 +1,6 @@
 const logger = require("morgan");
 const express = require("express");
+var bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
 
 
@@ -8,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 /*handlebars*/
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.set("view engine", "hbs");
 app.use(express.static("public"));

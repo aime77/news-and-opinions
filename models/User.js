@@ -29,6 +29,10 @@ const UserSchema = new Schema({
       "Password must be at least 7 characters long."
     ]
   },
+  article: [{
+    type: Schema.Types.ObjectId,
+    ref: "Article"
+  }],
   email: {
     type: String,
     unique: true,
@@ -41,6 +45,10 @@ const UserSchema = new Schema({
   },
   lastUpdated:Date,
   fullName:String,
+  article: {
+    type: Schema.Types.ObjectId,
+    ref: "Article"
+  }
 
 });
 

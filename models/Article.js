@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
@@ -13,17 +13,18 @@ const ArticleSchema = new Schema({
   },
  summary: {
    type: String,
+   unique:true,
   },
   saved: {
     type: Boolean,
     default: false
   },
-  note: {
+  note: [{
     type: Schema.Types.ObjectId,
-    res: "Note"
-  }
+    ref: "Note"
+  }]
 });
-
+ArticleSchema.plugin(uniqueValidator);
 const Article = mongoose.model("Article", ArticleSchema);
 
 module.exports = Article;

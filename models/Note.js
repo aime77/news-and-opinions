@@ -5,9 +5,7 @@ const Schema=mongoose.Schema;
 const NoteSchema=new Schema({
 
     title:String,
-    body: {
-        type:String,
-    }
+    body:String,
 });
 
 const Note=mongoose.model("Note", NoteSchema);

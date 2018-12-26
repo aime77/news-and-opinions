@@ -1,19 +1,50 @@
 <div class="card" id="{{_id}}">
-        <h5 class="card-header"><a href="#https://medium.com/{{link}}">{{title}}</a></h5>
-        <div class="card-body">
+    <h5 class="card-header">
+        <a href="#https://medium.com/{{link}}">{{title}}</a>
+    </h5>
+    <div class="card-body">
 
-           <p class="card-text">{{summary}}</p>
-            <a class="btn btn-primary" id="deleteButton" data-_id="{{_id}}">Delete</a>
-            <a class="btn btn-primary" id="noteButton" href="#note-form" rel="modal:open">Notes</a>
+        <p class="card-text">{{summary}}</p>
+        <a class="btn btn-primary" id="deleteButton" data-_id="{{_id}}">Delete</a>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="noteButton" data-_id="{{_id}}">
+            Notes
+        </button>
+    </div>
+</div>
+
+
+
+
+<!-- Modal test -->
+<div class="modal fade" tabindex="-1" id="exampleModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notesTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="notesBody list-group">
+                        </ul>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"></span>
+                    </div>
+                    <textarea class="form-control" aria-label="With textarea" id="noteInput"></textarea>
+
+                </div>
+                <a class="btn btn-primary" id="submit">Submit</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
-
-    <form id="note-form" class="modal">
- <div class="form-group">
-    <label for="exampleFormControlTextarea1">{{title}}</label>
-    <textarea class="form-control" id="noteText" rows="3"></textarea>
-     <a class="btn btn-primary" id="deleteButton" data-_id="{{_id}}">Delete</a>
-     <button class="btn btn-primary" id="submit" type="submit">Button</button>
-  </div>
-</form>
-
+</div>
