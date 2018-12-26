@@ -38,7 +38,7 @@ $(document).on("click", "#deleteButton", function() {
 
 $(document).on("click", ".deleteNote", function() {
   const thisId = $(this).attr("id");
-
+ 
   let deleteObj = {
     id: thisId
   };
@@ -73,6 +73,7 @@ $(document).on("click", "#submit", function(event) {
       data._id
     }>Delete</a></li>`;
 
+    $(`#${data._id}`).attr("data-_id", data._id);
     $(".notesBody").append(noteCard);
   });
 
@@ -99,6 +100,7 @@ $(document).on("click", "#noteButton", function() {
         data.note[i]._id
       }>Delete</a></li>`;
 
+      $(`#${data.note[i]._id}`).attr("data-_id", data.note[i]._id);
       $(".notesBody").append(noteCard);
     }
 
@@ -114,6 +116,7 @@ function appendNote(a) {
       a[i]._id
     }>Delete</a></li>`;
 
+    $(`#${a[i]._id}`).attr("data-_id", a[i]._id);
     $(".notesBody").append(noteCard);
   }
 }
