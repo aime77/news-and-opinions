@@ -20,8 +20,12 @@ db.once("open", () => {
 db.on("error", error => {
   console.log("Error MongooseDB:", error);
 });
+//show all scraped articles
+router.get("/", function(err, res) {
+  res.render("intro");
+});
 
-router.get("/scrape", (req, res) => {
+router.get("/scrape:id", (req, res) => {
   axios.get("https://medium.com/topic/technology").then(function(response) {
     const $ = cheerio.load(response.data);
 
@@ -42,27 +46,38 @@ router.get("/scrape", (req, res) => {
         .children("a")
         .text();
 
-      Article.create(result)
-        .then(function(result) {
-          console.log(result);
-          res.redirect("/home");
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
+      Article.create(result).then(function(dbArticle) {
+        User.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $push: { article: dbArticle._id }
+          },
+          {
+            new: true
+          }
+        )
+          .then(function(dbUser) {
+            console.log("yes created");
+            console.log(dbUser);
+            res.json(dbArticle);
+          })
+          .catch(function(err) {
+            res.json(err);
+          });
+      });
     });
   });
 });
 
-//show all scraped articles
-router.get("/", function(err, res) {
-  res.render("intro");
-});
+
 
 //show all scraped articles
-router.get("/home", function(err, res) {
-  Article.find({})
+router.get("/home/:id", function(req, res) {
+  
+  User.findOne({_id:req.params.id}).
+  populate("article")
     .then(function(dbArticle) {
+      console.log(dbArticle);
       res.render("index", { article: dbArticle });
     })
     .catch(function(err) {
@@ -166,11 +181,16 @@ router.post("/signin/", function(req, res) {
     });
 });
 
-//create an account after user signs in
+//login into account
 router.post("/login/", function(req, res) {
-  User.findOne({})
+  console.log(req.body.username);
+  console.log(req.body);
+  User.findOne({ username: req.body.username })
+
     .then(function(dbUser) {
-      console.log(dbUser);
+      console.log(dbUser._id);
+      //res.render("index", { User: dbUser });
+      res.json(dbUser);
     })
     .catch(function(err) {
       res.json(err);

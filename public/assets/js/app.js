@@ -1,9 +1,7 @@
+//save an article button
 $(document).on("click", "#saveButton", function() {
   const thisId = $(this).data("_id");
   const saved = $(this).data("saved");
-
-  console.log(saved);
-  console.log(thisId);
 
   let updateSave = {
     saved: saved,
@@ -19,6 +17,7 @@ $(document).on("click", "#saveButton", function() {
   $(`#${thisId}`).empty();
 });
 
+//delete an article and all its notes button
 $(document).on("click", "#deleteButton", function() {
   const thisId = $(this).data("_id");
 
@@ -36,9 +35,10 @@ $(document).on("click", "#deleteButton", function() {
   $(`#${thisId}`).empty();
 });
 
+//delete an individual note button
 $(document).on("click", ".deleteNote", function() {
   const thisId = $(this).attr("id");
- 
+
   let deleteObj = {
     id: thisId
   };
@@ -54,6 +54,7 @@ $(document).on("click", ".deleteNote", function() {
   $(`#id_${thisId}`).remove();
 });
 
+//post a note button
 $(document).on("click", "#submit", function(event) {
   event.preventDefault();
 
@@ -80,7 +81,8 @@ $(document).on("click", "#submit", function(event) {
   $("#noteInput").val("");
 });
 
-var getId;
+//button to create a note
+let getId;
 $(document).on("click", "#noteButton", function() {
   $("#notesTitle").empty();
   const thisId = $(this).data("_id");
@@ -103,8 +105,18 @@ $(document).on("click", "#noteButton", function() {
       $(`#${data.note[i]._id}`).attr("data-_id", data.note[i]._id);
       $(".notesBody").append(noteCard);
     }
+  });
+});
 
-    //appendNote(data.note)
+$(document).on("click", "#scrapeButton", function() {
+  $.ajax({
+    method: "GET",
+    url: `/scrape/${thisId}`
+  }).then(function(data) {
+    $.ajax({
+      method: "GET",
+      url: `/home/${data.id}`
+    });
   });
 });
 
@@ -121,6 +133,7 @@ function appendNote(a) {
   }
 }
 
+//sign in form button
 $(document).on("click", "#submitSignin", function(event) {
   event.preventDefault();
   const data = {
@@ -133,7 +146,6 @@ $(document).on("click", "#submitSignin", function(event) {
     firstName: $("#inputName").val()
   };
   console.log(data);
-  // empty form validation
 
   $.ajax("/signin/", {
     type: "POST",
@@ -149,19 +161,20 @@ $(document).on("click", "#submitSignin", function(event) {
   $("#inputName").val("");
 });
 
-$(document).on("click", "#login", function() {
+//login button
+$(document).on("click", "#loginSubmit", function() {
   const data = {
-    username: $("#inputUsername")
-      .val()
-      .trim(),
-    password: $("#inputPassword")
-      .val()
-      .trim()
+    username: $("#usernameInput").val(),
+    password: $("#passwordInput").val()
   };
-  $.ajax("/login", {
+  console.log(data);
+  $.ajax("/login/", {
     type: "POST",
     data: data
-  }).then(() => {
+  }).then(data => {
     console.log("sent data");
+    console.log(data);
+    window.location=`http://localhost:3000/home/${data._id}`
+  
   });
 });
