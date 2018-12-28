@@ -29,6 +29,10 @@ const UserSchema = new Schema({
       "Password must be at least 7 characters long."
     ]
   },
+  signInCheck: {
+    type: Boolean,
+    default: false
+  },
   article: [
     {
       type: Schema.Types.ObjectId,

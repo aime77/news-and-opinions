@@ -6,6 +6,7 @@ const axios = require("axios");
 const Note = require("./../models/Note.js");
 const Article = require("./../models/Article.js");
 const User = require("./../models/User.js");
+const Image = require("./../models/Image.js");
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
 
 mongoose.connect(MONGODB_URI);
@@ -20,17 +21,43 @@ db.once("open", () => {
 db.on("error", error => {
   console.log("Error MongooseDB:", error);
 });
-//show all scraped articles
+
 router.get("/", function(err, res) {
   res.render("intro");
 });
 
-router.get("/scrape:id", (req, res) => {
+// router.get("/", (req, res) => {
+//   axios.get("https://medium.com/").then(function(response) {
+//     let $ = cheerio.load(response.data);
+
+//     $("article").each(function(i, element) {
+//       let result = {};
+//       console.log("test");
+//       result.imageURL = $(this)
+//         .find("div.extremePostPreview-image.u-flex0")
+//         .children("a");
+      // .css('background-image');
+      // console.log("test");
+      //.replace(/url\(("|')(.+)("|')\)/gi, '$2');
+//       console.log(result);
+//       Image.create(result)
+//         .then(function(dbImage) {
+//           console.log(dbImage);
+//         })
+//         .catch(function(err) {
+//           res.json(err);
+//         });
+//     });
+//     res.render("intro", { images: dbImage });
+//   });
+// });
+
+router.get("/scrape/:id", (req, res) => {
   axios.get("https://medium.com/topic/technology").then(function(response) {
-    const $ = cheerio.load(response.data);
+    let $ = cheerio.load(response.data);
 
     $("section.m.n.o.fl.q.c").each(function(i, element) {
-      const result = {};
+      let result = {};
       result.summary = $(this)
         .find("p.bo.bp.bj.b.bk.bl.bm.bn.c.an.ct.cr.dv.ef")
         .children("a")
@@ -59,23 +86,20 @@ router.get("/scrape:id", (req, res) => {
           .then(function(dbUser) {
             console.log("yes created");
             console.log(dbUser);
-            res.json(dbArticle);
           })
           .catch(function(err) {
             res.json(err);
           });
       });
     });
+    res.redirect(`/home/${req.params.id}`);
   });
 });
 
-
-
 //show all scraped articles
 router.get("/home/:id", function(req, res) {
-  
-  User.findOne({_id:req.params.id}).
-  populate("article")
+  User.findOne({ _id: req.params.id })
+    .populate("article")
     .then(function(dbArticle) {
       console.log(dbArticle);
       res.render("index", { article: dbArticle });
@@ -97,6 +121,7 @@ router.delete("/article-delete/:id", function(req, res) {
 
 //update article to saved:true
 router.put("/article-save/:id", function(req, res) {
+  console.log(req.body);
   Article.findOneAndUpdate({ _id: req.body.id }, { saved: req.body.saved })
     .then(function(dbArticle) {
       res.json(dbArticle);
@@ -107,8 +132,9 @@ router.put("/article-save/:id", function(req, res) {
 });
 
 //show all saved articles
-router.get("/article/saved", function(res, res) {
-  Article.find({ saved: true })
+router.get("/article/saved/:id", function(req, res) {
+  User.findOne({ _id: req.params.id })
+    .populate("article")
     .then(function(dbArticle) {
       console.log(dbArticle);
       res.render("savedArticles", { article: dbArticle });
@@ -166,13 +192,10 @@ router.delete("/note/:id", function(req, res) {
 //create an account after user signs in
 router.post("/signin/", function(req, res) {
   console.log(req.body);
-  User.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    username: req.body.username,
-    password: req.body.password,
-    email: req.body.email
-  })
+  const user = new User(req.body);
+  user.setFullName();
+  user.lastUpdatedDate();
+  User.create(user)
     .then(function(dbUser) {
       console.log(dbUser);
     })
@@ -185,11 +208,12 @@ router.post("/signin/", function(req, res) {
 router.post("/login/", function(req, res) {
   console.log(req.body.username);
   console.log(req.body);
-  User.findOne({ username: req.body.username })
+  User.findOneAndUpdate({ password: req.body.password }, 
+    {signInCheck: true})
 
     .then(function(dbUser) {
       console.log(dbUser._id);
-      //res.render("index", { User: dbUser });
+      
       res.json(dbUser);
     })
     .catch(function(err) {

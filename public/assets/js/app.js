@@ -3,10 +3,12 @@ $(document).on("click", "#saveButton", function() {
   const thisId = $(this).data("_id");
   const saved = $(this).data("saved");
 
-  let updateSave = {
+  const updateSave = {
     saved: saved,
     id: thisId
   };
+
+  console.log(updateSave)
 
   $.ajax("/article-save/" + thisId, {
     type: "PUT",
@@ -105,18 +107,6 @@ $(document).on("click", "#noteButton", function() {
       $(`#${data.note[i]._id}`).attr("data-_id", data.note[i]._id);
       $(".notesBody").append(noteCard);
     }
-  });
-});
-
-$(document).on("click", "#scrapeButton", function() {
-  $.ajax({
-    method: "GET",
-    url: `/scrape/${thisId}`
-  }).then(function(data) {
-    $.ajax({
-      method: "GET",
-      url: `/home/${data.id}`
-    });
   });
 });
 

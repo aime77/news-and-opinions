@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
+//const uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
@@ -26,7 +26,7 @@ const ArticleSchema = new Schema({
     }
   ]
 });
-ArticleSchema.plugin(uniqueValidator);
+//ArticleSchema.plugin(uniqueValidator);
 const Article = mongoose.model("Article", ArticleSchema);
 
 module.exports = Article;
