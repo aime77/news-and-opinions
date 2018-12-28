@@ -1,28 +1,44 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-  <a class="navbar-brand">SCRAPER</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-expand-lg navbar-dark indigo fixed-top">
+  <a class="navbar-brand scraperFont">SCRAPER</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">About <span class="sr-only">(current)</span></a>
+
+      <!-- Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
+        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item"> Search the latest technology realted news from Medium and add notes by creating an account!</a>
+        </div>
       </li>
+
       <li class="nav-item">
-        <a class="nav-link" id="login" data-toggle="modal" data-target="#loginModal">Login</a>
+        <a class="nav-link" id="login" data-toggle="modal" data-target="#loginModal">Sign-In</a>
       </li>
-      <li class="nav-item">
-        <a class="btn btn-primary" id="signin" data-toggle="modal" data-target="#signinModal">Sign In</a>
+      <li class="nav-item my-auto">
+        <a class="btn btn-primary" id="signin" data-toggle="modal" data-target="#signinModal">CREATE AND ACCOUNT</a>
       </li>
     </ul>
   </div>
 </nav>
-<h1 class="text-center">For those who just can't resist good words...</h1>
-<h2 class="text-center">And to take notes</h2>
-<img src="./../assets/img/mediumScraper.png" class="img-thumbnail" alt="Responsive image">
-<img src="./../assets/img/takeNotes.jpg" class="img-thumbnail" alt="Responsive image">
+<div class="container">
+  <div class="jumbotron my-auto" style="border: 14px double #ff5850;">
 
-{{>login-signin/login}}
-{{>login-signin/signin}}
 
-   
+    <h1 class="text-center">For those who just cannot resist good words...</h1>
+    <div class="row px-10">
+      <div class="col-6 mx-auto">
+        <img src="./../assets/img/mediumScraper.png" class="img-thumbnail center-block" alt="Responsive image">
+        <h2 class="text-center mt-0">Scraper</h2>
+      </div>
+      <div class="col-3 mx-auto float-left">
+        <h2 class="text-center mb-0">And to </h2>
+        <img src="./../assets/img/takeNotes.jpg" class="img-thumbnail center-block" alt="Responsive image">
+      </div>
+    </div>
+  </div>
+</div>
+{{>login-signin/login}} {{>login-signin/signin}}
