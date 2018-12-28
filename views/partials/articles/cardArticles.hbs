@@ -1,8 +1,8 @@
 <div class="card" id="{{article._id}}">
-        <h5 class="card-header"><a href="#https://medium.com/{{article.link}}">{{article.title}}</a></h5>
+        <h5 class="card-header"><a href="https://medium.com{{article.link}}" target="_blank" style="color:black;">{{article.title}}</a></h5>
         <div class="card-body">
 
-           <p class="card-text">{{article.summary}}</p>
+           <p class="card-text"><a href="https://medium.com{{article.link}}" target="_blank" style="color:black;">{{article.summary}}</a></p>
             <a class="btn btn-primary" id="saveButton" data-_id="{{article._id}}" data-saved="{{saved}}">Save</a>
         </div>
     </div>

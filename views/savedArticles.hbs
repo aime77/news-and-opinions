@@ -1,18 +1,38 @@
+<style>
+    body {
+        margin-top: 12rem;
+        font-size: 1rem;
+        background-image: url("/assets/img/bg1.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
 
- <div class="container" >
+        color: black;
+        width: 100%;
+    }
+
+    h1 {
+        font-family: "Courgette", cursive;
+    }
+
+    h2 {
+        font-family: "Courgette", cursive;
+        font-size: 2rem;
+    }
+</style>
+
+<div class="container">
     <div class="jumbotron">
-  
+        <div class='py-9'>
+            <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
+        </div>
 
-<div class='py-9'>
-    <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
+        {{#each article}} {{#if article.saved}} {{>articles/cardArticles-saved this _id=_id title=title summary=summary link=link
+        article=article saved=false note=note}} {{/if}} {{/each}}
+    </div>
 </div>
-
-
-{{#each article}}  {{#if article.saved}} {{>articles/cardArticles-saved this _id=_id title=title summary=summary link=link article=article saved=false note=note}} {{/if}} {{/each}}
-
-
-
-   
- </div>
- </div>

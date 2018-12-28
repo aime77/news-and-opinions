@@ -164,7 +164,6 @@ $(document).on("click", "#loginSubmit", function() {
   }).then(data => {
     console.log("sent data");
     console.log(data);
-    window.location=`http://localhost:3000/home/${data._id}`
-  
+    window.location.assign(`/home/${data._id}`);
   });
 });

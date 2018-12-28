@@ -54,6 +54,14 @@ router.get("/", function(err, res) {
 
 router.get("/scrape/:id", (req, res) => {
   axios.get("https://medium.com/topic/technology").then(function(response) {
+  const titleArray=[];
+    User.find({_id:req.params.id},"article", function(err, docs){
+      Article.find({_id:{$in:docs.article}},"title", function(articleTitles){
+
+        titleArray.push(articleTitles.title);
+      } )
+    })
+
     let $ = cheerio.load(response.data);
 
     $("section.m.n.o.fl.q.c").each(function(i, element) {
@@ -73,7 +81,12 @@ router.get("/scrape/:id", (req, res) => {
         .children("a")
         .text();
 
+        titleArray.forEach((val)=>{
+          if(result.title!== val){
+        
+        
       Article.create(result).then(function(dbArticle) {
+        console.log(dbArticle);
         User.findOneAndUpdate(
           { _id: req.params.id },
           {
@@ -91,7 +104,11 @@ router.get("/scrape/:id", (req, res) => {
             res.json(err);
           });
       });
+    }else{
+      console.log("Already have title")
+    }
     });
+  })
     res.redirect(`/home/${req.params.id}`);
   });
 });
@@ -221,4 +238,26 @@ router.post("/login/", function(req, res) {
     });
 });
 
+router.get("/articlefind/", function(req, res){
+Article.find({}).then(function(all){
+
+  console.log(all);
+})
+})
+
+router.get("/Userfind/", function(req, res){
+ User.find({})
+ .populate("article")
+ .then(function(all){
+  
+    console.log(all);
+  })
+  })
+
+  router.get("/articlesDelete/", function(req, res){
+    Article.deleteMany({saved:false})
+    .then(function(all){
+      console.log(all);
+    })
+  })
 module.exports = router;

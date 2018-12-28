@@ -16,7 +16,8 @@ const UserSchema = new Schema({
   username: {
     type: String,
     trim: true,
-    required: "Username is required"
+    required: "Username is required",
+    unique:true
   },
   password: {
     type: String,
@@ -27,7 +28,8 @@ const UserSchema = new Schema({
         return input.length >= 7;
       },
       "Password must be at least 7 characters long."
-    ]
+    ],
+    unique:true
   },
   signInCheck: {
     type: Boolean,

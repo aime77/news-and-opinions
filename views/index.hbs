@@ -1,14 +1,12 @@
-
- <div class="container" >
+<div class="container">
     <div class="jumbotron">
-  
-<div class='py-9'>
-    <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
+
+        <div class='py-9'>
+            <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
+        </div>
+
+        {{#each article}} {{#unless article.saved}} {{>articles/cardArticles this _id=_id title=title summary=summary link=link saved=true}}
+        {{/unless}} {{/each}}
+
+    </div>
 </div>
-
-
-{{#each article}}  {{#unless article.saved}} {{>articles/cardArticles this _id=_id title=title summary=summary link=link saved=true}} {{/unless}} {{/each}}
-
-</div>
-</div>
-
