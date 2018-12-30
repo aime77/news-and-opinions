@@ -8,7 +8,7 @@ const Article = require("./../models/Article.js");
 const User = require("./../models/User.js");
 const Image = require("./../models/Image.js");
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
-mongoose.Promise = require('bluebird');
+mongoose.Promise = require("bluebird");
 
 mongoose.connect(MONGODB_URI);
 mongoose.Promise = Promise;
@@ -55,8 +55,8 @@ router.get("/", function(err, res) {
 
 // router.get("/scrape/:id", (req, res) => {
 //   axios.get("https://medium.com/topic/technology").then(function(response) {
-//     //-----------------------------------------------  
-      
+//     //-----------------------------------------------
+
 //       const titleArray = [];
 
 //     const query= User.findOne({ _id: req.params.id }).select("article");
@@ -79,7 +79,7 @@ router.get("/", function(err, res) {
 //     let $ = cheerio.load(response.data);
 
 //     $("section.m.n.o.fl.q.c").each(async function(i, element) {
-  
+
 //       let result = {};
 //       result.summary = $(this)
 //         .find("p.bo.bp.bj.b.bk.bl.bm.bn.c.an.ct.cr.dv.ef")
@@ -96,13 +96,12 @@ router.get("/", function(err, res) {
 //         .children("a")
 //         .text();
 
-       
 //       if(titleArray.length>=1){
 //         console.log("array length" + titleArray.length)
 //         titleArray.forEach(val=>{
-         
+
 //         if (result.title === val) {
-       
+
 //           console.log(`already have ${result.title}`)
 //         }else {    Article.create(result).then(function(dbArticle) {
 //           console.log(dbArticle);
@@ -122,11 +121,11 @@ router.get("/", function(err, res) {
 //             .catch(function(err) {
 //               res.json(err);
 //             });
-//         }); 
+//         });
 //       }
 //       });
 //     } else{
-      
+
 //     console.log("CREATE")
 //      await Article.create(result).then(function(dbArticle) {
 //         if(dbArticle){
@@ -149,97 +148,92 @@ router.get("/", function(err, res) {
 //               // .catch(function(err) {
 //               //   res.json(err);
 //               // });
-         
+
 //      });
-      
+
 //     };
 //   });
 // });
 //     res.redirect(`/home/${req.params.id}`);
 //   });
 
-
-
-
-  router.get("/scrape/:id", (req, res) => {
+router.get(
+  "/scrape/:id",
+  (req, res, next) => {
     axios.get("https://medium.com/topic/technology").then(function(response) {
-  
       let $ = cheerio.load(response.data);
-  
-      $("section.m.n.o.fl.q.c").each(async function(i, element) {
-    
+
+      $("section.m.n.o.fl.q.c").each(function(i, element) {
         let result = {};
         result.summary = $(this)
           .find("p.bo.bp.bj.b.bk.bl.bm.bn.c.an.ct.cr.dv.ef")
           .children("a")
           .text();
-  
+
         result.link = $(this)
           .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
           .children("a")
           .attr("href");
-  
+
         result.title = $(this)
           .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
           .children("a")
           .text();
 
-          result.userID=req.params.id;
+        result.userID = req.params.id;
 
-       Article.create(result).
-       then(function(dbArticle) {
-        console.log(dbArticle);
-        User.findOneAndUpdate(
-  
-          { _id: req.params.id },
-          {
-            $push: {article: dbArticle._id }
-          },
-          {
-            new: true
-          }
-        ).then(function(allusers){
-        console.log(allusers);
+        Article.create(result).then(function(dbArticle) {
+          console.log(dbArticle);
+          User.findOneAndUpdate(
+            { _id: req.params.id },
+            {
+              $push: { article: dbArticle._id }
+            },
+            {
+              new: true
+            }
+          ).then(function(allusers) {
+            console.log(allusers);
+          });
         });
       });
     });
-  });
-      res.redirect(`/home/${req.params.id}`);
+    next();
+  },
+  function(req, res) {
+    res.redirect(`/home/${req.params.id}`);
+  }
+);
+
+router.get("/user/:id", function(req, res) {
+  Article.find({ userID: req.params.id }).then(function(all) {
+    const array = [];
+    console.log(all);
+    all.forEach(val => {
+      console.log(typeof val);
+      array.push(val._id.toString());
+      console.log(val._id);
     });
+    // return array;
 
+    // then(function(array){
+    //   console.log(array);
 
+    console.log(array);
 
-router.get("/user/:id", function(req, res){
-Article.find({userID:req.params.id}).
-then(function(all){
- const array= []; 
-  console.log(all)
-all.forEach(val=>{
-  console.log(typeof val);
-array.push((val._id).toString());
-console.log(val._id);
-})
-// return array;
-
-// then(function(array){
-//   console.log(array);
-
-console.log(array);
-
-User.findOneAndUpdate(
-  
-    { _id: req.params.id },
-    {
-      $push: {article: {$each: array }}
-    },
-    {
-      new: true
-    }
-  ).then(function(allusers){
-  console.log(allusers);
+    User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: { article: { $each: array } }
+      },
+      {
+        new: true
+      }
+    ).then(function(allusers) {
+      console.log(allusers);
+    });
   });
-})
-})
+});
 // })
 
 // app.use('/user/:id', function (req, res, next) {
@@ -251,7 +245,7 @@ User.findOneAndUpdate(
 // })
 
 // User.findOneAndUpdate(
-  
+
 //   { _id: req.params.id },
 //   {
 //     $push: {article: {$each: array }}
@@ -266,8 +260,6 @@ User.findOneAndUpdate(
 //   console.log(test)
 // })
 // })
-  
-
 
 //show all scraped articles
 router.get("/home/:id", function(req, res) {
@@ -408,7 +400,7 @@ router.get("/Userfind/", function(req, res) {
 });
 
 router.get("/articlesDelete/", function(req, res) {
-  Article.deleteMany({ saved: false}).then(function(all) {
+  Article.deleteMany({ saved: false }).then(function(all) {
     console.log(all);
   });
 });

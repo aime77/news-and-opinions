@@ -72,9 +72,9 @@ $(document).on("click", "#submit", function(event) {
     console.log(data);
     let noteCard = `<li class="list-group-item" id="id_${data._id}">${
       data.body
-    } <a class="btn btn-primary small deleteNote" id=${
-      data._id
-    }>Delete</a></li>`;
+    } <i class="material-icons float right"><a class="deleteNote" id=${
+      data.note[i]._id
+    }>delete</a></i></li>`;
 
     $(`#${data._id}`).attr("data-_id", data._id);
     $(".notesBody").append(noteCard);
@@ -96,17 +96,20 @@ $(document).on("click", "#noteButton", function() {
   }).then(function(data) {
     $("#notesTitle").append(data.title);
     getId = data._id;
-
+    if(data.note.length<1){
+      $(".notesBody").text("Notes will show here");
+    }else{
     for (let i = 0; i < data.note.length; i++) {
       let noteCard = `<li class="list-group-item" id="id_${data.note[i]._id}">${
         data.note[i].body
-      } <a class="btn btn-primary small deleteNote" id=${
+      } <i class="material-icons float right"><a class="deleteNote" id=${
         data.note[i]._id
-      }>Delete</a></li>`;
+      }>delete</a></i></li>`;
 
       $(`#${data.note[i]._id}`).attr("data-_id", data.note[i]._id);
       $(".notesBody").append(noteCard);
     }
+  }
   });
 });
 
@@ -114,9 +117,11 @@ function appendNote(a) {
   for (let i = 0; i < a.length; i++) {
     let noteCard = `<li class="list-group-item" id="id_${a[i]._id}">${
       a[i].body
-    } <a class="btn btn-primary small deleteNote" id=${
+    } <i class="material-icons"><a class="deleteNote" id=${
       a[i]._id
-    }>Delete</a></li>`;
+    }>
+    delete
+   Delete</a> </i></li>`;
 
     $(`#${a[i]._id}`).attr("data-_id", a[i]._id);
     $(".notesBody").append(noteCard);
