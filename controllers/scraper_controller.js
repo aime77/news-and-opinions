@@ -362,15 +362,17 @@ router.post("/signin/", function(req, res) {
 });
 
 //login into account
-router.post("/login/", function(req, res) {
+router.post("/login/", function(req, res, next) {
   User.findOneAndUpdate({ password: req.body.password }, { signInCheck: true })
 
     .then(function(dbUser) {
+     
       res.json(dbUser);
     })
     .catch(function(err) {
       res.json(err);
     });
+
 });
 
 router.get("/articlefind/", function(req, res) {

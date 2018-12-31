@@ -168,7 +168,7 @@ $(document).on("click", "#loginSubmit", function() {
   }).then(data => {
     if(data.signInCheck){
     console.log("sent data");
-    window.location.href=`/home/${data._id}`};
+    document.location.href=`/home/${data._id}`};
   });
 });
 
@@ -183,6 +183,6 @@ $(document).on("click", "#signout", function() {
   }).then((data) => {
     console.log("sent data");
     console.log(data);
-    if(!data.signInCheck) window.location.href=`/`;
+    if(!data.signInCheck) document.location.href=`/`;
   });
 });
