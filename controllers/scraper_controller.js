@@ -260,7 +260,7 @@ router.get("/home/:id", function(req, res) {
     .populate("article")
     .then(function(dbArticle) {
       console.log(dbArticle);
-      res.render("index", { article: dbArticle });
+      res.render("index", {user: dbArticle });
     })
     .catch(function(err) {
       res.json(err);
@@ -295,7 +295,7 @@ router.get("/article/saved/:id", function(req, res) {
     .populate("article")
     .then(function(dbArticle) {
       console.log(dbArticle);
-      res.render("savedArticles", { article: dbArticle });
+      res.render("savedArticles", { user: dbArticle });
     })
     .catch(function(err) {
       res.json(err);
@@ -364,13 +364,9 @@ router.post("/signin/", function(req, res) {
 
 //login into account
 router.post("/login/", function(req, res) {
-  console.log(req.body.username);
-  console.log(req.body);
   User.findOneAndUpdate({ password: req.body.password }, { signInCheck: true })
 
     .then(function(dbUser) {
-      console.log(dbUser._id);
-
       res.json(dbUser);
     })
     .catch(function(err) {
@@ -381,12 +377,18 @@ router.post("/login/", function(req, res) {
 router.get("/articlefind/", function(req, res) {
   Article.find({}).then(function(all) {
     console.log(all);
+  })
+  .catch(function(err) {
+    res.json(err);
   });
 });
 
 router.get("/Notesfind/", function(req, res) {
   Note.find({}).then(function(all) {
     console.log(all);
+  })
+  .catch(function(err) {
+    res.json(err);
   });
 });
 
@@ -395,24 +397,47 @@ router.get("/Userfind/", function(req, res) {
     .populate("article")
     .then(function(all) {
       console.log(all);
+    })
+    .catch(function(err) {
+      res.json(err);
     });
 });
 
 router.get("/articlesDelete/", function(req, res) {
   Article.deleteMany({}).then(function(all) {
     console.log(all);
+  })
+  .catch(function(err) {
+    res.json(err);
   });
 });
 
 router.get("/UserDelete/", function(req, res) {
   User.deleteMany({}).then(function(all) {
     console.log(all);
+  })
+  .catch(function(err) {
+    res.json(err);
   });
 });
 
 router.get("/NotesDelete/", function(req, res) {
   Note.deleteMany({}).then(function(all) {
     console.log(all);
+  })
+  .catch(function(err) {
+    res.json(err);
   });
 });
+
+router.get("/signout/:id", function(req, res) {
+  User.findOneAndUpdate({_id: req.params.id }, { signInCheck: false }).then(function(userdb){
+    console.log(`user ${userdb._id} signed out`);
+    res.json(userdb);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+  });
+
 module.exports = router;

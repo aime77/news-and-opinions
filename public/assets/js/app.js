@@ -164,7 +164,23 @@ $(document).on("click", "#loginSubmit", function() {
     type: "POST",
     data: data
   }).then(data => {
+    if(data.signInCheck){
     console.log("sent data");
-    document.location.replace(`https://medium-scraper-and-note-taker.herokuapp.com/home/${data._id}`);
+    window.location.href=`/home/${data._id}`};
+  });
+});
+
+$(document).on("click", "#signout", function() {
+ console.log("test")
+  const thisId = $(this).data("id");
+  console.log(thisId);
+ 
+  
+  $.ajax(`/signout/${thisId}`, {
+    type: "GET",
+  }).then((data) => {
+    console.log("sent data");
+    console.log(data);
+    if(!data.signInCheck) window.location.href=`/`;
   });
 });

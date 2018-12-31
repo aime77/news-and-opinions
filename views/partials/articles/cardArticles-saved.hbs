@@ -1,11 +1,13 @@
-<div class="card" id="{{article._id}}">
+
+
+<div class="card" id="{{_id}}">
     <h5 class="card-header">
-        <a href="https://medium.com{{article.link}}" target="_blank" style="color:black;">{{article.title}}</a>
+        <a href="https://medium.com{{link}}" target="_blank" style="color:black;">{{title}}</a>
     </h5>
     <div class="card-body">
 
-        <p class="card-text"><a href="https://medium.com{{article.link}}" target="_blank" style="color:black;">{{article.summary}}</a></p>
-        <a class="btn btn-primary" id="deleteButton" data-_id="{{article._id}}">Delete</a>
+        <p class="card-text"><a href="https://medium.com{{link}}" target="_blank" style="color:black;">{{summary}}</a></p>
+        <a class="btn btn-primary" id="deleteButton" data-_id="{{_id}}">Delete</a>
 
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="noteButton" data-_id="{{article._id}}">
             Notes

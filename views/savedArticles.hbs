@@ -10,7 +10,7 @@
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
-        background-size: cover;
+        background-size: 100% 100%;
 
         color: black;
         width: 100%;
@@ -24,6 +24,10 @@
         font-family: "Courgette", cursive;
         font-size: 2rem;
     }
+
+    html {
+        height: 100%
+    }
 </style>
 
 <div class="container">
@@ -32,7 +36,7 @@
             <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
         </div>
 
-        {{#each article}} {{#if article.saved}} {{>articles/cardArticles-saved this _id=_id title=title summary=summary link=link
+        {{#each user.article}} {{#if saved}} {{>articles/cardArticles-saved this _id=_id title=title summary=summary link=link
         article=article saved=false note=note}} {{/if}} {{/each}}
     </div>
 </div>
