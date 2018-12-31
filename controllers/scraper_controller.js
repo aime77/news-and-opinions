@@ -157,52 +157,45 @@ router.get("/", function(err, res) {
 //     res.redirect(`/home/${req.params.id}`);
 //   });
 
-router.get(
-  "/scrape/:id",
-  (req, res, next) => {
-    axios.get("https://medium.com/topic/technology").then(function(response) {
-      let $ = cheerio.load(response.data);
+router.get(  "/scrape/:id",
+async (req, res, next) => {
+  const articles = await axios.get("https://medium.com/topic/technology");
+  const $ = await cheerio.load(articles.data);
 
-      $("section.m.n.o.fl.q.c").each(function(i, element) {
-        let result = {};
-        result.summary = $(this)
-          .find("p.bo.bp.bj.b.bk.bl.bm.bn.c.an.ct.cr.dv.ef")
-          .children("a")
-          .text();
+  $("section.m.n.o.fl.q.c").each(async function(i, element) {
+    let result = {};
+    result.summary = $(this)
+      .find("p.bo.bp.bj.b.bk.bl.bm.bn.c.an.ct.cr.dv.ef")
+      .children("a")
+      .text();
 
-        result.link = $(this)
-          .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
-          .children("a")
-          .attr("href");
+    result.link = $(this)
+      .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
+      .children("a")
+      .attr("href");
 
-        result.title = $(this)
-          .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
-          .children("a")
-          .text();
+    result.title = $(this)
+      .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
+      .children("a")
+      .text();
 
-        result.userID = req.params.id;
-
-        Article.create(result).then(function(dbArticle) {
-          console.log(dbArticle);
-          User.findOneAndUpdate(
-            { _id: req.params.id },
-            {
-              $push: { article: dbArticle._id }
-            },
-            {
-              new: true
-            }
-          ).then(function(allusers) {
-            console.log(allusers);
-          });
-        });
+    result.userID = req.params.id;
+    const article = await Article.create(result);
+    const user = await User.findOneAndUpdate({ _id: req.params.id },
+      {
+        $push: { article: article._id }
+      },
+      {
+        new: true
       });
-    });
-    next();
-  },
-  function(req, res) {
-    res.redirect(`/home/${req.params.id}`);
-  }
+    console.log(article);
+    console.log(user);
+  });
+  next();
+},
+function(req, res) {
+  res.redirect(`/home/${req.params.id}`);
+}
 );
 
 router.get("/user/:id", function(req, res) {
@@ -346,7 +339,7 @@ router.get("/notes/:id", function(req, res) {
     });
 });
 
-//delte individual notes
+//delete individual notes
 router.delete("/note/:id", function(req, res) {
   console.log(req.params.id);
   Note.findOneAndDelete({ _id: req.params.id }).then((err, res) => {
@@ -391,6 +384,12 @@ router.get("/articlefind/", function(req, res) {
   });
 });
 
+router.get("/Notesfind/", function(req, res) {
+  Note.find({}).then(function(all) {
+    console.log(all);
+  });
+});
+
 router.get("/Userfind/", function(req, res) {
   User.find({})
     .populate("article")
@@ -400,7 +399,7 @@ router.get("/Userfind/", function(req, res) {
 });
 
 router.get("/articlesDelete/", function(req, res) {
-  Article.deleteMany({ saved: false }).then(function(all) {
+  Article.deleteMany({}).then(function(all) {
     console.log(all);
   });
 });

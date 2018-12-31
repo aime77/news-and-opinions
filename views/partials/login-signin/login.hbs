@@ -1,5 +1,5 @@
 <!-- Modal test -->
-<div class="modal fade" tabindex="-1" id="loginModal" role="dialog">
+<div class="modal fade" id="loginModal" style="background-color:transparent;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -11,12 +11,12 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="usernameInput">Username</label>
-            <input type="text" class="form-control" id="usernameInput" placeholder="Username">
+            <label for="usernameInput2">Username</label>
+            <input type="text" class="form-control" id="usernameInput2" placeholder="Username">
           </div>
           <div class="form-group">
-            <label for="passwordInput">Password</label>
-            <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+            <label for="passwordInput2">Password</label>
+            <input type="password" class="form-control" id="passwordInput2" placeholder="Password">
           </div>
 
           <button type="submit" class="btn btn-primary" id="loginSubmit">Sign in</button>
@@ -25,7 +25,7 @@
       </div>
       <div class="modal-footer">
         <div class="float-left">
-        <p >No account?<a id="signin" data-toggle="modal" data-target="#signinModal" style="color:blue;"> Create one!</a></p>
+        <p >No account?<a class="signin" data-toggle="modal" data-target="#signinModal" style="color:blue;"> Create one!</a></p>
         </div>
       </div>
     </div>

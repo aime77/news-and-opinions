@@ -12,9 +12,11 @@ body {
   background-size: cover;
 
   color: black;
-  width: 100%;
+  background-size: 100% 100%;
 }
-
+html {
+  height: 100%
+}
 h1 {
   font-family: "Courgette", cursive;
 }
@@ -23,21 +25,12 @@ h2 {
   font-size: 2rem;
 }
 
-.modal-dialog{
-    background-color:transparent;
+.modal{
+    background-color:rgba(0,0,0,.15);
+    max-height:100%
+   
 }
-#qNew {
-  width: 22rem;
-  height: 3rem;
-  text-align: initial;
-}
-.toEatList {
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  background-color: #ffc37f;
-  -webkit-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
-}
+
 
 .submitButton {
   -webkit-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
@@ -45,10 +38,3 @@ h2 {
   box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-.eatenList {
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  background-color: lightgray;
-  -webkit-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
-}
