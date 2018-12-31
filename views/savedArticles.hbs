@@ -1,6 +1,7 @@
 <style>
-    body {
-        margin-top: 12rem;
+    body,
+    html {
+
         font-size: 1rem;
         background-image: url("/assets/img/bg1.jpg");
         background-repeat: no-repeat;
@@ -10,10 +11,10 @@
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
-        background-size: 100% 100%;
 
         color: black;
-        width: 100%;
+        background-size: 100% 100%;
+        height: 100%
     }
 
     h1 {
@@ -24,10 +25,6 @@
         font-family: "Courgette", cursive;
         font-size: 2rem;
     }
-
-    html {
-        height: 100%
-    }
 </style>
 
 <div class="container">
@@ -36,7 +33,7 @@
             <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
         </div>
 
-        {{#each user.article}} {{#if saved}} {{>articles/cardArticles-saved this _id=_id title=title summary=summary link=link
-        article=article saved=false note=note}} {{/if}} {{/each}}
+        {{#each user.article}} {{#if saved}} {{>articles/cardArticles-saved title=title _id=_id summary=summary link=link article=article
+        saved=false note=note}} {{/if}} {{/each}}
     </div>
 </div>

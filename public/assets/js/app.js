@@ -2,6 +2,7 @@
 $(document).on("click", "#saveButton", function() {
   const thisId = $(this).data("_id");
   const saved = $(this).data("saved");
+  $(this).attr("id", "save");
 
   const updateSave = {
     saved: saved,
@@ -16,6 +17,7 @@ $(document).on("click", "#saveButton", function() {
   }).then(data => {
     console.log(data);
   });
+
   $(`#${thisId}`).empty();
 });
 
@@ -34,7 +36,7 @@ $(document).on("click", "#deleteButton", function() {
     console.log(data);
   });
 
-  $(`#${thisId}`).empty();
+  $(`#save`).empty();
 });
 
 //delete an individual note button

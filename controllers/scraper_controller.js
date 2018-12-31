@@ -6,7 +6,6 @@ const axios = require("axios");
 const Note = require("./../models/Note.js");
 const Article = require("./../models/Article.js");
 const User = require("./../models/User.js");
-const Image = require("./../models/Image.js");
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
 mongoose.Promise = require("bluebird");
 
@@ -157,7 +156,7 @@ router.get("/", function(err, res) {
 //     res.redirect(`/home/${req.params.id}`);
 //   });
 
-router.get(  "/scrape/:id",
+router.get("/scrape/:id",
 async (req, res, next) => {
   const articles = await axios.get("https://medium.com/topic/technology");
   const $ = await cheerio.load(articles.data);
