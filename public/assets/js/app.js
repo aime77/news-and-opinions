@@ -165,6 +165,6 @@ $(document).on("click", "#loginSubmit", function() {
     data: data
   }).then(data => {
     console.log("sent data");
-    window.location.assign(`/home/${data._id}`);
+    window.location.assign(`https://medium-scraper-and-note-taker.herokuapp.com/home/${data._id}`);
   });
 });
