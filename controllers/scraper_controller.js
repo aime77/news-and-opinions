@@ -183,9 +183,6 @@ async (req, res, next) => {
     const user = await User.findOneAndUpdate({ _id: req.params.id },
       {
         $push: { article: article._id }
-      },
-      {
-        new: true
       });
     console.log(article);
     console.log(user);
@@ -254,6 +251,23 @@ router.get("/user/:id", function(req, res) {
 // })
 
 //show all scraped articles
+router.get("/test/:id", async function(req, res, next) {
+  const query= await Article.find({userID:req.params.id});
+  console.log(query);
+  for(let i=0; i<query.length; i++){
+ const updateUser= await User.findOneAndUpdate({ _id: req.params.id },
+  {
+    $push: { article: query[i]._id} 
+  }
+)
+console.log(updateUser)
+}
+}, function(res, req){
+
+  res.redirect(`/home/${req.params.id}`);
+})
+
+
 router.get("/home/:id", function(req, res) {
   User.findOne({ _id: req.params.id })
     .populate("article")

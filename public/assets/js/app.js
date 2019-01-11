@@ -1,8 +1,7 @@
 //save an article button
-$(document).on("click", "#saveButton", function() {
+$(document).on("click", ".saveButton", function() {
   const thisId = $(this).data("_id");
   const saved = $(this).data("saved");
-  $(this).attr("id", "save");
 
   const updateSave = {
     saved: saved,
