@@ -44,15 +44,18 @@ router.get(
           .children("a")
           .text();
 
-        console.log(result);
-
+        //verify if the article is already in the databse, if not scrape and save
         Article.findOne({ title: result.title }).then(findArticles => {
           if (findArticles) {
             console.log(findArticles);
           } else {
-            Article.create(result).then(article => {
-              console.log(article);
-            });
+            Article.create(result)
+              .then(article => {
+                console.log(article);
+              })
+              .catch(function(err) {
+                res.json(err);
+              });
           }
         });
       });
@@ -64,6 +67,7 @@ router.get(
   }
 );
 
+//getting all scraped articles
 router.get("/", (req, res) => {
   Article.find({})
     .then(function(dbArticle) {
@@ -152,67 +156,6 @@ router.delete("/note/:id", (req, res) => {
   Note.findOneAndDelete({ _id: req.params.id }).then((err, res) => {
     console.log(res);
   });
-});
-
-router.get("/articlefind/", (req, res) => {
-  Article.find({})
-    .then(function(all) {
-      console.log(all);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
-
-router.get("/Notesfind/", (req, res) => {
-  Note.find({})
-    .then(function(all) {
-      console.log(all);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
-
-router.get("/Userfind/", (req, res) => {
-  User.find({})
-    .populate("article")
-    .then(function(all) {
-      console.log(all);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
-
-router.get("/articlesDelete/", (req, res) => {
-  Article.deleteMany({})
-    .then(function(all) {
-      console.log(all);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
-
-router.get("/UserDelete/", (req, res) => {
-  User.deleteMany({})
-    .then(function(all) {
-      console.log(all);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
-
-router.get("/NotesDelete/", (req, res) => {
-  Note.deleteMany({})
-    .then(function(all) {
-      console.log(all);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
 });
 
 module.exports = router;
