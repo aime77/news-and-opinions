@@ -21,47 +21,54 @@ db.on("error", error => {
   console.log("Error MongooseDB:", error);
 });
 
-router.get("/scrape/",
-async (req, res, next) => {
-  const articles = await axios.get("https://medium.com/topic/technology");
-  const $ = await cheerio.load(articles.data);
+router.get(
+  "/scrape/",
+  (req, res, next) => {
+    axios.get("https://medium.com/topic/technology").then(function(response) {
+      const $ = cheerio.load(response.data);
 
-  $("section.m.n.o.fl.q.c").each(async function(i, element) {
-    let result = {};
-    result.summary = $(this)
-      .find("p.bo.bp.bj.b.bk.bl.bm.bn.c.an.ct.cr.dv.ef")
-      .children("a")
-      .text();
+      $("section.m.n.o.fl.q.c").each(function(i, element) {
+        let result = {};
+        result.summary = $(this)
+          .find("p.bo.bp.bj.b.bk.bl.bm.bn.c.an.ct.cr.dv.ef")
+          .children("a")
+          .text();
 
-    result.link = $(this)
-      .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
-      .children("a")
-      .attr("href");
+        result.link = $(this)
+          .find("h3.ai.y.cl.bj.cm.bk.ec.ft.fu.c.an.ee.cr")
+          .children("a")
+          .attr("href");
 
-    result.title = $(this)
-      .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
-      .children("a")
-      .text();
+        result.title = $(this)
+          .find("h3.ai.y.cl.bj.cm.bk.ec.ft.fu.c.an.ee.cr")
+          .children("a")
+          .text();
 
-  
-    const article = await Article.create(result);
-    
-    console.log(article);
-   
-  });
-  next();
-},
-(req, res)=> {
-  res.redirect(`/`);
-}
+        console.log(result);
+
+        Article.findOne({ title: result.title }).then(findArticles => {
+          if (findArticles) {
+            console.log(findArticles);
+          } else {
+            Article.create(result).then(article => {
+              console.log(article);
+            });
+          }
+        });
+      });
+    });
+    next();
+  },
+  (req, res) => {
+    res.redirect(`/`);
+  }
 );
 
-
-router.get("/", (req, res)=> {
+router.get("/", (req, res) => {
   Article.find({})
     .then(function(dbArticle) {
       console.log(dbArticle);
-      res.render("index", {article: dbArticle });
+      res.render("index", { article: dbArticle });
     })
     .catch(function(err) {
       res.json(err);
@@ -69,7 +76,7 @@ router.get("/", (req, res)=> {
 });
 
 //delete article and note references
-router.delete("/article-delete/:id", (req, res)=> {
+router.delete("/article-delete/:id", (req, res) => {
   Article.findOneAndDelete({ _id: req.body.id }, (err, response) => {
     console.log(response);
     Note.deleteMany({ _id: { $in: response.note } }, function(err, res) {
@@ -79,7 +86,7 @@ router.delete("/article-delete/:id", (req, res)=> {
 });
 
 //update article to saved:true
-router.put("/article-save/:id", (req, res)=> {
+router.put("/article-save/:id", (req, res) => {
   console.log(req.body);
   Article.findOneAndUpdate({ _id: req.body.id }, { saved: req.body.saved })
     .then(function(dbArticle) {
@@ -91,11 +98,11 @@ router.put("/article-save/:id", (req, res)=> {
 });
 
 //show all saved articles
-router.get("/article/saved/", (req, res)=> {
-  Article.find({saved:true })
+router.get("/article/saved/", (req, res) => {
+  Article.find({ saved: true })
     .then(function(dbArticle) {
       console.log(dbArticle);
-      res.render("savedArticles", {article: dbArticle });
+      res.render("savedArticles", { article: dbArticle });
     })
     .catch(function(err) {
       res.json(err);
@@ -103,7 +110,7 @@ router.get("/article/saved/", (req, res)=> {
 });
 
 //create a note
-router.post("/notes/:id", (req, res)=> {
+router.post("/notes/:id", (req, res) => {
   Note.create({ body: req.body.note })
     .then(function(dbNote) {
       Article.findOneAndUpdate(
@@ -126,7 +133,7 @@ router.post("/notes/:id", (req, res)=> {
 });
 
 //display notes per article
-router.get("/notes/:id", (req, res)=> {
+router.get("/notes/:id", (req, res) => {
   Article.findOne({ _id: req.params.id })
     .populate("note")
     .then(function(dbArticle) {
@@ -140,33 +147,34 @@ router.get("/notes/:id", (req, res)=> {
 });
 
 //delete individual notes
-router.delete("/note/:id", (req, res)=> {
+router.delete("/note/:id", (req, res) => {
   console.log(req.params.id);
   Note.findOneAndDelete({ _id: req.params.id }).then((err, res) => {
     console.log(res);
   });
 });
 
-
-router.get("/articlefind/", (req, res)=> {
-  Article.find({}).then(function(all) {
-    console.log(all);
-  })
-  .catch(function(err) {
-    res.json(err);
-  });
+router.get("/articlefind/", (req, res) => {
+  Article.find({})
+    .then(function(all) {
+      console.log(all);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
-router.get("/Notesfind/", (req, res)=> {
-  Note.find({}).then(function(all) {
-    console.log(all);
-  })
-  .catch(function(err) {
-    res.json(err);
-  });
+router.get("/Notesfind/", (req, res) => {
+  Note.find({})
+    .then(function(all) {
+      console.log(all);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
-router.get("/Userfind/", (req, res)=> {
+router.get("/Userfind/", (req, res) => {
   User.find({})
     .populate("article")
     .then(function(all) {
@@ -177,41 +185,34 @@ router.get("/Userfind/", (req, res)=> {
     });
 });
 
-router.get("/articlesDelete/", (req, res)=> {
-  Article.deleteMany({}).then(function(all) {
-    console.log(all);
-  })
-  .catch(function(err) {
-    res.json(err);
-  });
+router.get("/articlesDelete/", (req, res) => {
+  Article.deleteMany({})
+    .then(function(all) {
+      console.log(all);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
-router.get("/UserDelete/", (req, res)=> {
-  User.deleteMany({}).then(function(all) {
-    console.log(all);
-  })
-  .catch(function(err) {
-    res.json(err);
-  });
+router.get("/UserDelete/", (req, res) => {
+  User.deleteMany({})
+    .then(function(all) {
+      console.log(all);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
-router.get("/NotesDelete/", (req, res)=> {
-  Note.deleteMany({}).then(function(all) {
-    console.log(all);
-  })
-  .catch(function(err) {
-    res.json(err);
-  });
+router.get("/NotesDelete/", (req, res) => {
+  Note.deleteMany({})
+    .then(function(all) {
+      console.log(all);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
 });
-
-router.get("/signout/:id", (req, res)=> {
-  User.findOneAndUpdate({_id: req.params.id }, { signInCheck: false }).then(function(userdb){
-    console.log(`user ${userdb._id} signed out`);
-    res.json(userdb);
-  })
-  .catch(function(err) {
-    res.json(err);
-  });
-  });
 
 module.exports = router;
