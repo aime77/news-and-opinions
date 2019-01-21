@@ -3,8 +3,7 @@
 
 <head>
   <meta charset='UTF-8'>
-  <meta name="viewport" content="width=device-width, initial-scale=1"
-  <!-- Font Awesome -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
   <!-- Bootstrap core CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
@@ -22,14 +21,12 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark indigo fixed-top">
 
-      <li class="nav-item navbar dropdown" style="height:100%">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hello {{user.firstName}}
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#"  data-id={{user._id}} id="signout">Sign out</a>
-          </div>
-          </li>
- 
+  <li class="nav-item navbar" style="height:100%">
+    <a aria-haspopup="true" aria-expanded="false">MEDIUM SCRAPER
+    </a>
+
+  </li>
+
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -37,13 +34,13 @@
   <div class="collapse navbar-collapse navbar-dark indigo" style="height:30%" id="navbarNavDropdown">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/home/{{user._id}}">Home</a>
+        <a class="nav-link" href="/">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/article/saved/{{user._id}}">Saved Articles</a>
+        <a class="nav-link" href="/article/saved/">Saved Articles</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/scrape/{{user._id}}" id="scrapeButton">Scrape New Articles</a>
+        <a class="nav-link" href="/scrape/" id="scrapeButton">Scrape New Articles</a>
       </li>
     </ul>
   </div>
@@ -53,15 +50,15 @@
   {{{body}}}
 </body>
 
-  <!-- JQuery -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.6.0/js/mdb.min.js"></script>
-  <script src="/assets/js/app.js"></script>
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.6.0/js/mdb.min.js"></script>
+<script src="/assets/js/app.js"></script>
 
 
 </html>

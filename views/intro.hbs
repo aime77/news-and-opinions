@@ -1,42 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-expand-lg navbar-dark indigo fixed-top">
-  <a class="navbar-brand scraperFont">SCRAPER</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse navbar-dark indigo" style="height:30%" id="navbarNavDropdown" style="background-color:#3f51b5 indigo">
-    <ul class="navbar-nav">
-
-      <!-- Dropdown -->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
-        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" style="font-family: Verdana, Geneva, Tahoma, sans-serif"> Search the latest technology realted news from Medium and add notes by creating an account!</a>
-        </div>
-      </li>
-
-      <li class="nav-item">
-        <a id="login" class="nav-link" data-toggle="modal" data-target="#loginModal">Sign-In</a>
-      </li>
-      <li class="nav-item my-auto">
-        <a class="btn btn-primary" id="signin" data-toggle="modal" data-target="#signinModal">CREATE AN ACCOUNT</a>
-      </li>
-    </ul>
-  </div>
-</nav>
 <div class="container">
-  <div class="jumbotron my-auto" style="border: 14px double #ff5850;">
-    <h1 class="text-center">For those who just cannot resist good words...</h1>
-    <div class="row px-10">
-      <div class="col-6 mx-auto">
-        <img src="./../assets/img/mediumScraper.png" class="img-thumbnail center-block" alt="Responsive image">
-        <h2 class="text-center mt-0">Scraper</h2>
-      </div>
-      <div class="col-3 mx-auto float-left">
-        <h2 class="text-center mb-0">And to </h2>
-        <img src="./../assets/img/takeNotes.jpg" class="img-thumbnail center-block" alt="Responsive image">
-      </div>
+    <div class="jumbotron my-auto">
+        <div>
+            <h4>Scrape articles from Medium and save your favorite ones</h4>
+        </div>
+        {{#each article}} {{#unless saved}} {{>articles/cardArticles this _id=_id title=title link=link summary=summary saved=true}}
+        {{/unless}} {{/each}}
     </div>
-  </div>
 </div>
-{{>login-signin/login}} {{>login-signin/signin}}

@@ -13,27 +13,33 @@
         -o-background-size: cover;
 
         color: black;
-        background-size: 100% 100%;
-        height: 100%
+        min-height: 100%;
+        color: black;
+
+        height: auto;
     }
 
     h1 {
         font-family: "Courgette", cursive;
     }
 
-    h2 {
-        font-family: "Courgette", cursive;
+    h4 {
+        font-family: "Courgette";
         font-size: 2rem;
+    }
+
+    .jumbotron {
+        background-color: rgb(215, 236, 250);
     }
 </style>
 
 <div class="container">
     <div class="jumbotron">
         <div class='py-9'>
-            <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
+            <h1 class="text-center my-5">Saved Articles</h1>
         </div>
 
-        {{#each user.article}} {{#if saved}} {{>articles/cardArticles-saved title=title _id=_id summary=summary link=link article=article
+        {{#each article}} {{#if saved}} {{>articles/cardArticles-saved title=title _id=_id summary=summary link=link article=article
         saved=false note=note}} {{/if}} {{/each}}
     </div>
 </div>

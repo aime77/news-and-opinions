@@ -1,15 +1,27 @@
+
+
 <div class="container">
-    <div class="jumbotron">
-
-        <div class='py-9'>
-            <h1 class="text-center my-5">Scraper for Medium Addicts!!</h1>
-        </div>
-
-        {{#each user.article}} 
-        {{#unless saved}} 
-        {{>articles/cardArticles this _id=_id title=title summary=summary link=link saved=true}}
-        {{/unless}} 
-        {{/each}}
+  <div class="jumbotron my-auto" style="border: 14px double #5062ff; height:50%">
+    <div class="col-6 mx-auto">
+        <img src="./../assets/img/mediumScraper.png" class="img-thumbnail center-block" alt="Responsive image">
+        <h2 class="text-center mt-0">Scraper</h2>
+      </div>
+       <h4 class="text-center">For those who just cannot resist good words...</h4>
+    <div class="row px-10">
 
     </div>
-</div>
+  </div>
+
+    <div class="jumbotron mainjumbo my-1">
+
+       <h2 class="text-center my-5">Scraped Articles</h2>
+   {{#each article}} {{#unless saved}} {{>articles/cardArticles this _id=_id title=title link=link summary=summary link=link saved=true}}
+        {{/unless}} {{/each}}
+        </div>
+    
+  </div>
+       
+
+    
+
+    

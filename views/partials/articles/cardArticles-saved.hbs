@@ -1,13 +1,14 @@
-
-
 <div class="card" id="{{_id}}">
     <h5 class="card-header">
-        <a href="https://medium.com{{link}}" target="_blank" style="color:black;">{{title}}</a>
+        <a href="{{link}}" target="_blank" style="color:black;">{{title}}</a>
     </h5>
     <div class="card-body">
 
-        <p class="card-text"><a href="https://medium.com{{link}}" target="_blank" style="color:black;">{{summary}}</a></p>
-        <a class="btn btn-primary" id="deleteButton" data-_id="{{_id}}">Delete</a>
+        <p class="card-text">
+            <a href="{{link}}" target="_blank" style="color:black;">{{summary}}</a>
+        </p>
+        <a class="btn btn-primary mx-1" href="{{link}}" target="_blank" style="color:black;">View</a>
+        <a class="btn btn-primary mx-1" id="deleteButton" data-_id="{{_id}}">Delete</a>
 
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="noteButton" data-_id="{{_id}}">
             Notes
@@ -17,8 +18,8 @@
 
 
 <!-- Modal -->
-<div class="modal fade modal-dialog" id="exampleModal" role="dialog"  style="background-color:transparent;">
-    <div class="modal-dialog" role="document"> 
+<div class="modal fade modal-dialog" id="exampleModal" role="dialog" style="background-color:transparent;">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="notesTitle"></h5>

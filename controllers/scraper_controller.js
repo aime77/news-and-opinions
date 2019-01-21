@@ -5,7 +5,6 @@ const cheerio = require("cheerio");
 const axios = require("axios");
 const Note = require("./../models/Note.js");
 const Article = require("./../models/Article.js");
-const User = require("./../models/User.js");
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
 mongoose.Promise = require("bluebird");
 
@@ -22,141 +21,7 @@ db.on("error", error => {
   console.log("Error MongooseDB:", error);
 });
 
-router.get("/", function(err, res) {
-  res.render("intro");
-});
-
-// router.get("/", (req, res) => {
-//   axios.get("https://medium.com/").then(function(response) {
-//     let $ = cheerio.load(response.data);
-
-//     $("article").each(function(i, element) {
-//       let result = {};
-//       console.log("test");
-//       result.imageURL = $(this)
-//         .find("div.extremePostPreview-image.u-flex0")
-//         .children("a");
-// .css('background-image');
-// console.log("test");
-//.replace(/url\(("|')(.+)("|')\)/gi, '$2');
-//       console.log(result);
-//       Image.create(result)
-//         .then(function(dbImage) {
-//           console.log(dbImage);
-//         })
-//         .catch(function(err) {
-//           res.json(err);
-//         });
-//     });
-//     res.render("intro", { images: dbImage });
-//   });
-// });
-
-// router.get("/scrape/:id", (req, res) => {
-//   axios.get("https://medium.com/topic/technology").then(function(response) {
-//     //-----------------------------------------------
-
-//       const titleArray = [];
-
-//     const query= User.findOne({ _id: req.params.id }).select("article");
-//     console.log(query);
-//     query.exec(function(err, docs) {
-//       console.log("docs " +docs);
-//       Article.find({ _id: { $in: docs.article } }, "title", function(
-//         articleTitles
-//       ) {
-//         if (articleTitles) titleArray.push(articleTitles.title);
-//         else {
-//           console.log("articles to scrape");
-//         }
-//       });
-//     });
-
-//     console.log(titleArray);
-// //---------------------------------------------------------------
-
-//     let $ = cheerio.load(response.data);
-
-//     $("section.m.n.o.fl.q.c").each(async function(i, element) {
-
-//       let result = {};
-//       result.summary = $(this)
-//         .find("p.bo.bp.bj.b.bk.bl.bm.bn.c.an.ct.cr.dv.ef")
-//         .children("a")
-//         .text();
-
-//       result.link = $(this)
-//         .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
-//         .children("a")
-//         .attr("href");
-
-//       result.title = $(this)
-//         .find("h3.ai.y.cl.bj.cm.bk.ec.fs.ft.c.an.ee.cr")
-//         .children("a")
-//         .text();
-
-//       if(titleArray.length>=1){
-//         console.log("array length" + titleArray.length)
-//         titleArray.forEach(val=>{
-
-//         if (result.title === val) {
-
-//           console.log(`already have ${result.title}`)
-//         }else {    Article.create(result).then(function(dbArticle) {
-//           console.log(dbArticle);
-//           User.findOneAndUpdate(
-//             { _id: req.params.id },
-//             {
-//               $push: { article: dbArticle._id }
-//             },
-//             {
-//               new: true
-//             }
-//           )
-//             .then(function(dbUser) {
-//               console.log("yes created");
-//               console.log(dbUser);
-//             })
-//             .catch(function(err) {
-//               res.json(err);
-//             });
-//         });
-//       }
-//       });
-//     } else{
-
-//     console.log("CREATE")
-//      await Article.create(result).then(function(dbArticle) {
-//         if(dbArticle){
-//          User.findOneAndUpdate(
-//               { _id: req.params.id },
-//               {
-//                 $push: { article: dbArticle._id }
-//               },
-//               {
-//                 new: true
-//               }
-//             );
-//           }else{
-//             console.log("not today")
-//           }
-//               // .then(function(dbUser) {
-//               //   console.log("yes created");
-//               //  console.log(update);
-//               // })
-//               // .catch(function(err) {
-//               //   res.json(err);
-//               // });
-
-//      });
-
-//     };
-//   });
-// });
-//     res.redirect(`/home/${req.params.id}`);
-//   });
-
-router.get("/scrape/:id",
+router.get("/scrape/",
 async (req, res, next) => {
   const articles = await axios.get("https://medium.com/topic/technology");
   const $ = await cheerio.load(articles.data);
@@ -178,102 +43,25 @@ async (req, res, next) => {
       .children("a")
       .text();
 
-    result.userID = req.params.id;
+  
     const article = await Article.create(result);
-    const user = await User.findOneAndUpdate({ _id: req.params.id },
-      {
-        $push: { article: article._id }
-      });
+    
     console.log(article);
-    console.log(user);
+   
   });
   next();
 },
-function(req, res) {
-  res.redirect(`/home/${req.params.id}`);
+(req, res)=> {
+  res.redirect(`/`);
 }
 );
 
-router.get("/user/:id", function(req, res) {
-  Article.find({ userID: req.params.id }).then(function(all) {
-    const array = [];
-    console.log(all);
-    all.forEach(val => {
-      console.log(typeof val);
-      array.push(val._id.toString());
-      console.log(val._id);
-    });
-    // return array;
 
-    // then(function(array){
-    //   console.log(array);
-
-    console.log(array);
-
-    User.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        $push: { article: { $each: array } }
-      },
-      {
-        new: true
-      }
-    ).then(function(allusers) {
-      console.log(allusers);
-    });
-  });
-});
-// })
-
-// app.use('/user/:id', function (req, res, next) {
-//   console.log('Request URL:', req.originalUrl)
-//   next()
-// }, function (req, res, next) {
-//   console.log('Request Type:', req.method)
-//   next()
-// })
-
-// User.findOneAndUpdate(
-
-//   { _id: req.params.id },
-//   {
-//     $push: {article: {$each: array }}
-//   },
-//   {
-//     new: true
-//   }
-// ).then(function(allusers){
-// console.log(allusers);
-// });
-// }).then(function(test){
-//   console.log(test)
-// })
-// })
-
-//show all scraped articles
-router.get("/test/:id", async function(req, res, next) {
-  const query= await Article.find({userID:req.params.id});
-  console.log(query);
-  for(let i=0; i<query.length; i++){
- const updateUser= await User.findOneAndUpdate({ _id: req.params.id },
-  {
-    $push: { article: query[i]._id} 
-  }
-)
-console.log(updateUser)
-}
-}, function(res, req){
-
-  res.redirect(`/home/${req.params.id}`);
-})
-
-
-router.get("/home/:id", function(req, res) {
-  User.findOne({ _id: req.params.id })
-    .populate("article")
+router.get("/", (req, res)=> {
+  Article.find({})
     .then(function(dbArticle) {
       console.log(dbArticle);
-      res.render("index", {user: dbArticle });
+      res.render("index", {article: dbArticle });
     })
     .catch(function(err) {
       res.json(err);
@@ -281,7 +69,7 @@ router.get("/home/:id", function(req, res) {
 });
 
 //delete article and note references
-router.delete("/article-delete/:id", function(req, res) {
+router.delete("/article-delete/:id", (req, res)=> {
   Article.findOneAndDelete({ _id: req.body.id }, (err, response) => {
     console.log(response);
     Note.deleteMany({ _id: { $in: response.note } }, function(err, res) {
@@ -291,7 +79,7 @@ router.delete("/article-delete/:id", function(req, res) {
 });
 
 //update article to saved:true
-router.put("/article-save/:id", function(req, res) {
+router.put("/article-save/:id", (req, res)=> {
   console.log(req.body);
   Article.findOneAndUpdate({ _id: req.body.id }, { saved: req.body.saved })
     .then(function(dbArticle) {
@@ -303,12 +91,11 @@ router.put("/article-save/:id", function(req, res) {
 });
 
 //show all saved articles
-router.get("/article/saved/:id", function(req, res) {
-  User.findOne({ _id: req.params.id })
-    .populate("article")
+router.get("/article/saved/", (req, res)=> {
+  Article.find({saved:true })
     .then(function(dbArticle) {
       console.log(dbArticle);
-      res.render("savedArticles", { user: dbArticle });
+      res.render("savedArticles", {article: dbArticle });
     })
     .catch(function(err) {
       res.json(err);
@@ -316,7 +103,7 @@ router.get("/article/saved/:id", function(req, res) {
 });
 
 //create a note
-router.post("/notes/:id", function(req, res) {
+router.post("/notes/:id", (req, res)=> {
   Note.create({ body: req.body.note })
     .then(function(dbNote) {
       Article.findOneAndUpdate(
@@ -339,7 +126,7 @@ router.post("/notes/:id", function(req, res) {
 });
 
 //display notes per article
-router.get("/notes/:id", function(req, res) {
+router.get("/notes/:id", (req, res)=> {
   Article.findOne({ _id: req.params.id })
     .populate("note")
     .then(function(dbArticle) {
@@ -353,43 +140,15 @@ router.get("/notes/:id", function(req, res) {
 });
 
 //delete individual notes
-router.delete("/note/:id", function(req, res) {
+router.delete("/note/:id", (req, res)=> {
   console.log(req.params.id);
   Note.findOneAndDelete({ _id: req.params.id }).then((err, res) => {
     console.log(res);
   });
 });
 
-//create an account after user signs in
-router.post("/signin/", function(req, res) {
-  console.log(req.body);
-  const user = new User(req.body);
-  user.setFullName();
-  user.lastUpdatedDate();
-  User.create(user)
-    .then(function(dbUser) {
-      console.log(dbUser);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
 
-//login into account
-router.post("/login/", function(req, res, next) {
-  User.findOneAndUpdate({ password: req.body.password }, { signInCheck: true })
-
-    .then(function(dbUser) {
-     
-      res.json(dbUser);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-
-});
-
-router.get("/articlefind/", function(req, res) {
+router.get("/articlefind/", (req, res)=> {
   Article.find({}).then(function(all) {
     console.log(all);
   })
@@ -398,7 +157,7 @@ router.get("/articlefind/", function(req, res) {
   });
 });
 
-router.get("/Notesfind/", function(req, res) {
+router.get("/Notesfind/", (req, res)=> {
   Note.find({}).then(function(all) {
     console.log(all);
   })
@@ -407,7 +166,7 @@ router.get("/Notesfind/", function(req, res) {
   });
 });
 
-router.get("/Userfind/", function(req, res) {
+router.get("/Userfind/", (req, res)=> {
   User.find({})
     .populate("article")
     .then(function(all) {
@@ -418,7 +177,7 @@ router.get("/Userfind/", function(req, res) {
     });
 });
 
-router.get("/articlesDelete/", function(req, res) {
+router.get("/articlesDelete/", (req, res)=> {
   Article.deleteMany({}).then(function(all) {
     console.log(all);
   })
@@ -427,7 +186,7 @@ router.get("/articlesDelete/", function(req, res) {
   });
 });
 
-router.get("/UserDelete/", function(req, res) {
+router.get("/UserDelete/", (req, res)=> {
   User.deleteMany({}).then(function(all) {
     console.log(all);
   })
@@ -436,7 +195,7 @@ router.get("/UserDelete/", function(req, res) {
   });
 });
 
-router.get("/NotesDelete/", function(req, res) {
+router.get("/NotesDelete/", (req, res)=> {
   Note.deleteMany({}).then(function(all) {
     console.log(all);
   })
@@ -445,7 +204,7 @@ router.get("/NotesDelete/", function(req, res) {
   });
 });
 
-router.get("/signout/:id", function(req, res) {
+router.get("/signout/:id", (req, res)=> {
   User.findOneAndUpdate({_id: req.params.id }, { signInCheck: false }).then(function(userdb){
     console.log(`user ${userdb._id} signed out`);
     res.json(userdb);

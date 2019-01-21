@@ -1,4 +1,4 @@
-body, html{
+html, body {
 
   font-size: 1rem;
   background-image: url("/assets/img/bg1.jpg");
@@ -12,22 +12,25 @@ body, html{
  
 
   color: black;
-  background-size: 100% 100%;
-  height:100%
+
+  min-height: 100%;
+  color: black;
+
+  height: auto;
 }
 
 h1 {
   font-family: "Courgette", cursive;
 }
-h2 {
-  font-family: "Courgette", cursive;
+h4 {
+  font-family: "Courgette";
   font-size: 2rem;
+  text-align: center;
 }
 
 .modal{
     background-color:rgba(0,0,0,.15);
     max-height:100%
-   
 }
 
 
@@ -35,5 +38,9 @@ h2 {
   -webkit-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 4px 0px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.mainjumbo{
+  background-color: rgb(215, 236, 250);
 }
 
